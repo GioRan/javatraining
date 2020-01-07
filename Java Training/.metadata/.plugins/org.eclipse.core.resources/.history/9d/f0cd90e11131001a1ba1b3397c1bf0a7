@@ -1,0 +1,14 @@
+package application.controller;
+
+import org.springframework.stereotype.Service;
+
+
+public class DogController {
+	public static String name;
+	public static Integer age;
+	
+	public String getDog() {
+		return "a dog!";
+	}
+	
+}

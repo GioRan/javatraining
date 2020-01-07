@@ -1,0 +1,1 @@
+spring.data.mongodb.uri="mongodb+srv://JavaTraining:SnqGQOrBSopqudfS@tsupitero-api-cluster-ywyr1.gcp.mongodb.net/test?retryWrites=true&w=majority"

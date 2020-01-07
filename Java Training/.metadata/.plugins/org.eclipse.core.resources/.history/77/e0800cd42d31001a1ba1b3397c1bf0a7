@@ -1,0 +1,36 @@
+package application.controller;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.bson.Document;
+import org.springframework.stereotype.Service;
+
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.BasicDBObject;
+
+@Service
+public class DogController {
+	public static String name;
+	public static Integer age;
+
+	
+	
+	public void getDog() {
+		MongoClient db = new MongoClient();
+
+		MongoDatabase database = db.getDatabase("javatraining");
+		MongoCollection<Document> collection = database.getCollection("test");
+		
+		Document canvas = new Document("item", "canvas")
+		        .append("qty", 100);
+
+		canvas.put("size", canvas);
+
+		collection.insertOne(canvas);
+		
+	}
+	
+}

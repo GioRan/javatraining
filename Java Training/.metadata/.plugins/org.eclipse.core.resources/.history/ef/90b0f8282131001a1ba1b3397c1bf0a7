@@ -1,0 +1,34 @@
+package application.controller;
+
+import org.bson.Document;
+import org.springframework.stereotype.Service;
+
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.BasicDBObject;
+
+@Service
+public class DogController {
+	public static String name;
+	public static Integer age;
+
+	
+	@SuppressWarnings("deprecation")
+	public void getDog() {
+		MongoClient db = new MongoClient();
+
+		MongoDatabase database = db.getDatabase("javatraining");
+		
+		MongoCollection<Document> collection = database.getCollection("test");
+		
+		BasicDBObject document = new BasicDBObject();
+		document.put("name", "Shubham");
+		document.put("company", "Baeldung");
+		
+		
+		
+		collection.insert(document);
+	}
+	
+}

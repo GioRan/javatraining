@@ -1,0 +1,1 @@
+spring.data.mongodb.uri="mongodb+srv://<username>:<password>@tsupitero-api-cluster-ywyr1.gcp.mongodb.net/test?retryWrites=true&w=majority"

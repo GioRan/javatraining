@@ -1,0 +1,25 @@
+package application.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.mongodb.MongoDbFactory;
+import com.mongodb.DB;
+import com.mongodb.client.MongoDatabase;
+
+
+public class DogController {
+	public static String name;
+	public static Integer age;
+	
+	private MongoDbFactory mongo;
+	
+	@Autowired
+    public DogController(MongoDbFactory mongo) {
+        this.mongo = mongo;
+    }
+	
+	public void getDog() {
+		MongoDatabase db = mongo.getDb("mongodb+srv://JavaTraining:SnqGQOrBSopqudfS@tsupitero-api-cluster-ywyr1.gcp.mongodb.net/test?retryWrites=true&w=majority");
+	}
+	
+}

@@ -1,0 +1,16 @@
+package application.controller;
+
+import org.springframework.data.mongodb.MongoDbFactory;
+
+
+public class DogController {
+	public static String name;
+	public static Integer age;
+	
+	private MongoDbFactory mongo;
+	
+	public String getDog() {
+		return "a dog!";
+	}
+	
+}

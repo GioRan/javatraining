@@ -1,0 +1,21 @@
+package application.controller;
+
+import com.mongodb.MongoClient;
+import com.mongodb.DB;
+
+
+public class DogController {
+	public static String name;
+	public static Integer age;
+
+	
+	public void getDog() {
+		MongoClient db = new MongoClient();
+		
+		@SuppressWarnings("deprecation")
+		DB database = db.getDB("test");
+		
+		db.getDatabaseNames().forEach(System.out::println);
+	}
+	
+}
