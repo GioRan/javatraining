@@ -1,0 +1,45 @@
+package application.controller;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import application.repository.DogRepository;
+import application.entity.DogEntity;
+import application.dto.DogDTO;
+
+@Component
+@Controller
+@RequestMapping(path="/demo")
+public class DogController {
+  @Autowired
+  private DogRepository dogRepository;
+
+  @PostMapping(path="/add")
+  public @ResponseBody String addNewUser (@RequestParam String name
+      , @RequestParam String email) {
+
+//    DogEntity dog = new DogEntity();
+//    dog.setName(name);
+//    dog.setEmail(email);
+//    dogRepository.save(dog);
+    
+    DogDTO dogdto = new DogDTO();
+    dogdto.setEmail(email);
+    dogdto.setName(name);
+   
+    
+    return "Saved";
+  }
+
+  @GetMapping(path="/all")
+  public @ResponseBody Iterable<DogEntity> getAllUsers() {
+    return dogRepository.findAll();
+  }
+}

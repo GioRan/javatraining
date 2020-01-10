@@ -1,0 +1,5 @@
+package application.modelmapper;
+
+public class ModelMapper {
+
+}

@@ -1,0 +1,76 @@
+package application.service;
+
+import java.util.Optional;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import application.dto.DogDTO;
+import application.entity.Dog;
+import application.repository.DogRepository;
+
+@Service
+public class DogService {
+	
+	@Autowired
+	private DogRepository dogRepository;
+	
+	@Autowired
+	private ModelMapper modelMapper;
+
+	public DogDTO getDog(Integer dogId) {
+		Dog dog  = dogRepository.findById(dogId).orElse(null);
+		
+		DogDTO dogdto = modelMapper.map(dog, DogDTO.class);
+		
+		return dogdto;
+	}
+	
+	public Iterable<Dog> getDogs(){
+		return dogRepository.findAll();
+	}
+	
+	public DogDTO addDog(DogDTO dog) {
+		Dog dogEntity = dogRepository.save(dToToEntity(dog));
+		
+		return 
+	}
+	
+	public Iterable<Dog> addDogs(Iterable<Dog> dog) {
+		return dogRepository.saveAll(dog);
+	}
+	
+	public void updateDog(Integer dogId, Dog dog) {
+		Dog foundDog = dogRepository.findById(dogId).orElse(null);
+		
+		if(foundDog != null) {
+			foundDog.setName(dog.getName());
+			foundDog.setEmail(dog.getEmail());
+			
+			dogRepository.save(foundDog);
+		}
+	}
+	
+	public void deleteDog(Integer dogId) {
+		Dog foundDog = dogRepository.findById(dogId).orElse(null);
+		
+		if(foundDog != null) {
+			dogRepository.deleteById(dogId);
+		}
+	}
+
+	public Dog dToToEntity(DogDTO dog) {
+		Dog dogEntity = modelMapper.map(dog, Dog.class);
+
+		return dogEntity;
+		
+	}
+	
+	public DogDTO entityToDTO(Dog dog) {		
+		DogDTO dogDto = modelMapper.map(dog, DogDTO.class);
+
+		return dogDto;
+	}
+	
+}

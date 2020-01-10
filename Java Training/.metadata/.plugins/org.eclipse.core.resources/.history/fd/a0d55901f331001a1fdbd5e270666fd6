@@ -1,0 +1,61 @@
+package application.controller;
+
+import java.util.Optional;
+
+import javax.validation.Valid;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import application.service.DogService;
+import application.entity.Dog;
+import application.controller.DogDTOController;
+import application.dto.DogDTO;
+
+@Controller
+@RequestMapping(path="/dogs")
+public class DogController {
+	
+  @Autowired
+  private DogService dogService;
+  private DogDTOController dogDtoController;
+  
+  @RequestMapping(method=RequestMethod.GET, value="/getDog/{id}")
+  public @ResponseBody void getDog(@PathVariable(value="id") Integer dogId) {
+	 //dogDtoController.entityToDTO(dogService.getDog(dogId));
+	  //System.out.println(dogService.getDog(dogId).getId());
+  }
+  
+  @RequestMapping(method=RequestMethod.GET, value="/getDogs")
+  public @ResponseBody Iterable<Dog> getAllDogs() {
+	  return dogService.getDogs();
+  }
+  
+  @RequestMapping(method=RequestMethod.POST, value="/addDog")
+  public void addDog(@Valid @RequestBody Dog dog){
+	  Dog dogg = dogDtoController.dToToEntity(dog);
+	  dogService.addDog(dogg);
+  }
+  
+  @RequestMapping(method=RequestMethod.POST, value="/addDogs")
+  public Iterable<Dog> addDogs(@Valid @RequestBody Iterable<Dog> dog){
+	  return dogService.addDogs(dog);
+  }
+  
+  @RequestMapping(method=RequestMethod.PUT, value="/updateDog/{id}")
+  public @ResponseBody void updateDog(@PathVariable(value="id") Integer dogId, @RequestBody Dog dog) {
+	  dogService.updateDog(dogId, dog);
+  }
+  
+  @RequestMapping(method=RequestMethod.DELETE, value="/deleteDog/{id}")
+  public void deleteDog(@PathVariable(value="id") Integer dogId) {
+	  dogService.deleteDog(dogId);
+  }
+  
+}

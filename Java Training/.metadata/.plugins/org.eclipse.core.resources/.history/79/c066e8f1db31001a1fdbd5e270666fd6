@@ -1,0 +1,9 @@
+package application.dto;
+
+public class DogDTO {
+
+	private Integer id;
+	private String name;
+	private String email;
+
+}

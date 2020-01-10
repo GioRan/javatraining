@@ -1,0 +1,95 @@
+package application.service;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import application.dto.DogDTO;
+import application.entity.Dog;
+import application.repository.DogRepository;
+
+@Service
+public class DogService {
+	
+	@Autowired
+	private DogRepository dogRepository;
+	
+	@Autowired
+	private ModelMapper modelMapper;
+
+	public DogDTO getDog(Integer dogId) {
+		Dog dog  = dogRepository.findById(dogId).orElse(null);
+		DogDTO dogDto = mapToDTO(dog);
+	
+		return dogDto;
+	}
+	
+	public Iterable<DogDTO> getDogs(){
+		List<Dog> dogList = new ArrayList<Dog>();
+		Iterable<Dog> dogs = dogRepository.findAll();
+		
+		dogs.forEach(dogList::add);
+		
+		return mapListToDTO(dogList);	
+	}
+	
+	private List<DogDTO> mapToDTO(Iterable<Dog> dogs, Type listType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public DogDTO addDog(DogDTO dog) {
+		Dog dogEntity = dogRepository.save(mapToEntity(dog));
+		DogDTO dogDto = mapToDTO(dogEntity);
+		
+		return dogDto;
+	}
+	
+	public Iterable<Dog> addDogs(Iterable<Dog> dog) {
+		return dogRepository.saveAll(dog);
+	}
+	
+	public void updateDog(Integer dogId, Dog dog) {
+		Dog foundDog = dogRepository.findById(dogId).orElse(null);
+		
+		if(foundDog != null) {
+			foundDog.setName(dog.getName());
+			foundDog.setEmail(dog.getEmail());
+			
+			dogRepository.save(foundDog);
+		}
+	}
+	
+	public void deleteDog(Integer dogId) {
+		Dog foundDog = dogRepository.findById(dogId).orElse(null);
+		
+		if(foundDog != null) {
+			dogRepository.deleteById(dogId);
+		}
+	}
+
+	public Dog mapToEntity(DogDTO dog) {
+		Dog dogEntity = modelMapper.map(dog, Dog.class);
+
+		return dogEntity;
+		
+	}
+	
+	public DogDTO mapToDTO(Dog dog) {		
+		DogDTO dogDto = modelMapper.map(dog, DogDTO.class);
+
+		return dogDto;
+	}
+	
+	public List<DogDTO> mapListToDTO(List<Dog> dogList) {	
+		return dogList.stream().map(dog -> modelMapper.map(dog, DogDTO.class)).collect(Collectors.toList());
+	}
+	
+}

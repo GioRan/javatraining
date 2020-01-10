@@ -1,0 +1,7 @@
+package application.controller;
+
+public class ModelMap {
+	public ModelMapper modelMapper() {
+		return new ModelMapper();
+	}
+}

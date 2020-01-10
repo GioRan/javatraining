@@ -1,0 +1,22 @@
+package application.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import application.entity.Dog;
+import application.repository.DogRepository;
+
+@Service
+public class DogService {
+	
+	@Autowired
+	private DogRepository dogRepository;
+
+	public Iterable<Dog> getDogs(){
+		return dogRepository.findAll();
+	}
+	
+	public void addDogs(Iterable<Dog> dog) {
+		dogRepository.saveAll(dog);
+	}
+}

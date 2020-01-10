@@ -1,0 +1,106 @@
+package application.service;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import application.dto.DogDTO;
+import application.entity.Dog;
+import application.repository.DogRepository;
+
+@Service
+public class DogService {
+	
+	@Autowired
+	private DogRepository dogRepository;
+	
+	@Autowired
+	private ModelMapper modelMapper;
+
+	public DogDTO getDog(Integer dogId) {
+		Dog dog  = dogRepository.findById(dogId).orElse(null);
+		DogDTO dogDto = mapToDTO(dog);
+	
+		return dogDto;
+	}
+	
+	public Iterable<DogDTO> getDogs(){
+		List<Dog> dogList = new ArrayList<Dog>();
+		Iterable<Dog> dogs = dogRepository.findAll();
+		
+		dogs.forEach(dogList::add);
+		
+		return mapListToDTO(dogList);	
+	}
+
+	public DogDTO addDog(DogDTO dog) {
+		Dog dogEntity = dogRepository.save(mapToEntity(dog));
+		DogDTO dogDto = mapToDTO(dogEntity);
+		
+		return dogDto;
+	}
+	
+	public Iterable<Dog> addDogs(Iterable<DogDTO> dog) {
+		List<DogDTO> dogList = new ArrayList<DogDTO>();
+		Iterable<DogDTO> dogs = dog;
+		
+		dogs.forEach(dogList::add);
+		
+		List<Dog> returningDogs = mapListToEntity(dogList);
+		
+		Iterable<Dog> iterableDogs = returningDogs;
+		
+		return dogRepository.saveAll(iterableDogs);
+	}
+	
+	public Dog updateDog(Integer dogId, DogDTO dogDto) {
+		Dog foundDog = dogRepository.findById(dogId).orElse(null);
+		
+		DogDTO returningDogDto = mapToDTO(foundDog);
+		
+		returningDogDto.setName(dogDto.getName());
+		returningDogDto.setEmail(dogDto.getEmail());
+		
+		Dog returningDogEntity = mapToEntity(returningDogDto);
+		
+		return dogRepository.save(returningDogEntity);
+	}
+	
+	public void deleteDog(Integer dogId) {
+		Dog foundDog = dogRepository.findById(dogId).orElse(null);
+		
+		if(foundDog != null) {
+			dogRepository.deleteById(dogId);
+		}
+	}
+
+	public Dog mapToEntity(DogDTO dog) {
+		Dog dogEntity = modelMapper.map(dog, Dog.class);
+
+		return dogEntity;
+		
+	}
+	
+	public DogDTO mapToDTO(Dog dog) {		
+		DogDTO dogDto = modelMapper.map(dog, DogDTO.class);
+
+		return dogDto;
+	}
+	
+	public List<DogDTO> mapListToDTO(List<Dog> dogList) {	
+		return dogList.stream().map(dog -> modelMapper.map(dog, DogDTO.class)).collect(Collectors.toList());
+	}
+	
+	public List<Dog> mapListToEntity(List<DogDTO> dogList) {	
+		return dogList.stream().map(dog -> modelMapper.map(dog, Dog.class)).collect(Collectors.toList());
+	}
+	
+}

@@ -1,0 +1,35 @@
+package application.controller;
+
+import java.util.Optional;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import application.entity.Dog;
+import application.dto.DogDTO;
+import application.controller.AppConfiguration;
+
+@Controller
+public class DogDTOController {
+	
+	@Autowired
+	private AppConfiguration modelMapper;
+
+	public void entityToDTO(Dog dog) {		
+		DogDTO dogDto = modelMapper.modelMapper().map(dog, DogDTO.class);
+		
+		System.out.println(dog);
+		//System.out.println(dogDto);
+	}
+	
+//	public Dog dToToEntity(DogDTO dogDto) {
+//		ModelMapper modelMapper = new ModelMapper();
+//		
+//		Dog dog = modelMapper.map(dogDto, Dog.class);
+//		
+//		return dog;
+//	}
+}

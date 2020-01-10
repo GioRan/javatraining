@@ -1,0 +1,25 @@
+package application.controller;
+
+import org.modelmapper.ModelMapper;
+
+import application.entity.Dog;
+import application.dto.DogDTO;
+
+public class DogDTOController {
+
+	public DogDTO entityToDTO(Dog dog) {
+		ModelMapper modelMapper = new ModelMapper();
+		
+		DogDTO dogDto = modelMapper.map(dog, DogDTO.class);
+		
+		return dogDto;
+	}
+	
+	public Dog dToToEntity(DogDTO dogDto) {
+		ModelMapper modelMapper = new ModelMapper();
+		
+		Dog dog = modelMapper.map(dogDto, Dog.class);
+		
+		return dog;
+	}
+}

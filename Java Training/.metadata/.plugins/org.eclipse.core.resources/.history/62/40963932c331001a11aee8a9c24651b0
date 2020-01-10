@@ -1,0 +1,51 @@
+package application.controller;
+
+import java.util.Optional;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import application.service.DogService;
+import application.entity.Dog;
+
+@Controller
+@RequestMapping(path="/dogs")
+public class DogController {
+	
+  @Autowired
+  private DogService dogService;
+  
+  @RequestMapping(method=RequestMethod.GET, value="/getDogs")
+  public @ResponseBody Iterable<Dog> getAllDogs() {
+    return dogService.getDogs();
+  }
+  
+  @RequestMapping(method=RequestMethod.GET, value="/getDog/{id}")
+  public @ResponseBody Optional<Dog> getDog(@PathVariable(value="id") Integer dogId) {
+    return dogService.getDog(dogId);
+  }
+  
+  @RequestMapping(method=RequestMethod.POST, value="/addDog")
+  public void addDog(@Valid @RequestBody Dog dog){
+	  dogService.addDog(dog);
+  }
+  
+  @RequestMapping(method=RequestMethod.POST, value="/addDogs")
+  public void addDogs(@Valid @RequestBody Iterable<Dog> dog){
+	  dogService.addDogs(dog);
+  }
+  
+  @RequestMapping(method=RequestMethod.PUT, value="updateDog")
+  public void updateDog(@Valid @RequestBody Dog ) {
+	  
+  }
+  
+}
